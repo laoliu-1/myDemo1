@@ -1,0 +1,207 @@
+
+
+<style>
+/* div{width: 30px;height:40px;} */
+*{margin: 0;padding:0;}
+body{height:100%;background: black;padding-top: 100px;display: flex;justify-content: center;}
+
+div.div1 p.lunzi{width:15px;height:40px;background: chartreuse;}
+div.div1 p.mid{width: 20px;height:20px;background: chocolate;position: absolute;top:10px;left:15px;}
+div.div1 p.mid span:nth-of-type(1){display:block;width: 10px;height:10px;border-radius: 50%;background:blanchedalmond;position: absolute;top:5px;left:5px;}
+div.div1 p.mid span:nth-of-type(2){display:block;height:30px;border: red 1px solid;position: absolute;top:8px;left:9px;}
+div.div1 p.lunzi2{width:15px;height:40px;background: chartreuse;position:absolute;top:0;left:35px;}
+div{width: 50px;height: 40px;position: relative;}
+
+div.div2 p.lunzi{width:15px;height:40px;background: yellow;}
+div.div2 p.mid{width: 20px;height:20px;background: white;position: absolute;top:10px;left:15px;}
+div.div2 p.mid span:nth-of-type(1){display:block;width: 10px;height:10px;border-radius: 50%;background:black;position: absolute;top:5px;left:5px;}
+div.div2 p.mid span:nth-of-type(2){display:block;height:30px;border: red 1px solid;position: absolute;top:8px;left:9px;}
+div.div2 p.lunzi2{width:15px;height:40px;background: yellow;position:absolute;top:0;left:35px;}
+/* div.div2{bottom:-400px;} */
+@keyframes left{
+    from{left:0;}
+    to{left:-40px;}
+}
+@keyframes up{
+    from{top: 0;}
+    to{top: -40px;}
+}
+@keyframes right{
+    from{left: 0;}
+    to{left: 40px;}
+}
+@keyframes down{
+    from{top: 0;}
+    to{top:40px;}
+}
+</style>
+<script>
+
+    //敌方坦克随机移动
+    var t=setInterval(function(){
+           var div=document.querySelectorAll('.div1')
+          for(var i=0;i<div.length;i++)
+          {
+           var direct=Math.floor(Math.random()*4)
+           switch(direct)
+           {
+               case 0:div[i].style.transform='rotateZ(90deg)';
+               div[i].style.left='-60px';
+               div[i].style.transition='left 1s ';
+                      break;
+
+               case 1:div[i].style.transform='rotateZ(180deg)';
+               div[i].style.top='-60px';
+               div[i].style.transition='top 1s ';
+                      break;
+
+               case 2:div[i].style.transform='rotateZ(270deg)';
+               div[i].style.left='60px';
+               div[i].style.transition='left 1s ';
+                      break;
+
+               case 3:div[i].style.transform='rotateZ(360deg)';
+               div[i].style.top='60px';
+               div[i].style.transition='top 1s ';
+                      default:
+           }
+      }
+    },500) 
+
+    //创建子弹
+    document.addEventListener('keydown',function(evt){
+             var e=evt||window.event
+             if(e.key=='j'){
+                //  alert('子弹被创建')
+                var buletObj=document.createElement('p')
+                var div2=document.querySelector('.div2')
+                div2.appendChild(buletObj)
+                
+             }
+    })
+    var w,s,a,d
+    //控制自己坦克移动
+    document.addEventListener('keydown',function(evt){
+              var e=evt||window.event
+              var div2=document.querySelector('.div2')
+              
+       if(e.key=='w')
+       {
+           div2.style.transform='rotateZ(180deg)'
+         if(!w){
+             w= setInterval(function(){
+               div2.style.top=parseInt(div2.style.top)-10      
+             },100) 
+         }   
+       }
+       if(e.key=='s')
+       {
+           div2.style.transform='rotateZ(360deg)'
+         if(!s)
+         {
+            s= setInterval(function(){
+            div2.style.top=parseInt(div2.style.top)+10
+            },100)  
+         }
+       }
+       if(e.key=='a')
+       {
+           div2.style.transform='rotateZ(90deg)'
+         if(!a){
+             a= setInterval(function(){
+             div2.style.left=parseInt(div2.style.left)-10
+            },100)  
+         }
+       }
+       if(e.key=='d')
+       {
+           div2.style.transform='rotateZ(270deg)'
+          if(!d){
+           d= setInterval(function(){
+            div2.style.left=parseInt(div2.style.left)+10         
+            },100)  
+          }
+       }
+       
+    })
+    
+    //松开清楚定时器
+    document.addEventListener('keyup',function(evt){
+                var e=evt||window.event
+                
+        if(e.key=='w')
+        {
+         clearInterval(a);a=undefined;
+         clearInterval(s);s=undefined;
+         clearInterval(d);d=undefined;
+         
+        }
+        if(e.key=='s')
+        {
+         clearInterval(a);a=undefined
+         clearInterval(w);w=undefined
+         clearInterval(d);d=undefined
+        }
+        if(e.key=='a')
+        {
+         clearInterval(s);s=undefined
+         clearInterval(w);w=undefined
+         clearInterval(d);d=undefined
+        }
+        if(e.key=='d')
+        {
+         clearInterval(a);a=undefined
+         clearInterval(w);w=undefined
+         clearInterval(s);s=undefined
+        }
+        
+    })
+    //画出敌人坦克
+  function tank(){
+
+ document.write("<div class='div1'>")
+ document.write("<p class='lunzi'>")
+ document.write(' </p>')
+
+        document.write("<p class='mid'>")
+            document.write('  <span>')
+            document.write('  </span>')
+             document.write(' <span>')
+             document.write('</span>')
+         document.write('</p>')
+
+  document.write("<p class='lunzi2'>")
+  document.write('</p>')
+document.write('</div>')
+  }
+tank()
+tank()
+tank()
+tank()
+tank()
+
+//画自己坦克
+function mytank(){
+
+document.write("<div class='div2'>")
+document.write("<p class='lunzi'>")
+document.write(' </p>')
+
+       document.write("<p class='mid'>")
+           document.write('  <span>')
+           document.write('  </span>')
+            document.write(' <span>')
+            document.write('</span>')
+        document.write('</p>')
+
+ document.write("<p class='lunzi2'>")
+ document.write('</p>')
+document.write('</div>')
+
+var  div2=document.querySelector('.div2')
+     div2.style.top=400
+     div2.style.left=100
+ }
+mytank()
+                    
+</script>
