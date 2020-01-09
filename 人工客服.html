@@ -1,0 +1,99 @@
+<meta charset="UTF-8">
+<style>
+ *{margin: 0;padding: 0}
+ body{height: 100%;}
+ html{height: 100%;display: flex;justify-content: center;align-items: center;}
+ div{
+     width:400px;height: 580px;
+     display: flex;
+     flex-direction:column;
+     position: relative;
+     border: 2px solid gray;
+     }
+ header{
+     background:#62a8ea;
+     width: 100%;
+     height: 45px;
+     display: flex;
+     justify-content: space-between;
+     overflow: hidden;
+     }
+  header span{color: white;border: 1px solid white;padding: 3px 0;margin:8px 5px; } 
+  article{flex: 1;overflow: auto;position: relative;}
+  textarea{width: 100%;height: 150px;overflow: hidden;}
+  button{
+             background: cadetblue;
+             padding: 2px 5px;
+             position: absolute;
+             right: 2px;
+             bottom: 2px;
+             }  
+</style>
+<div>
+    <header>
+        <img src="./imgs/QQ图片20191228092510.png"/>
+        <span>人工客服</span>
+    </header>
+    
+<article>
+
+</article>
+<textarea>
+    
+</textarea>
+<button>发送</button>
+</div>
+<script src="./ajax.js"></script>
+<script>
+  var articleObj=document.querySelector('article')
+
+  document.querySelector('button').addEventListener('click',fn)
+  document.addEventListener('keydown',function(evt){
+       var e=evt||window.event
+
+       if(e.key=='Enter'){fn()}
+  })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+  function fn(){
+    
+    // 保持滚动条 底端 
+     var search=document.querySelector('textarea').value
+     var none=/^\s*$/g
+     //内容为空 终止
+     if(none.test(search)) return
+    var Myspan= document.createElement('p')
+        Myspan.style.overflow="hidden"
+    Myspan.innerHTML=`
+    <img src="./imgs/my.jpg" style="width:35;height:35;float:right;margin:4px"/>
+    <span style="float:right;background:pink;margin:10px;">${search}</span>
+    `
+    articleObj.appendChild(Myspan)
+    document.querySelector('textarea').value=''
+     get('./qs_ans.php',`search=${search}`,(res)=>{
+        
+           var Herspan=document.createElement('p')
+           Herspan.style.overflow="hidden"
+       if(res.meta.status==200 && res.data.length>0)
+       {
+           console.log(res)
+           var ans=res.data[0].ans
+        
+           Herspan.innerHTML=`
+           <img src="./imgs/he.jpg" style="width:35;height:35;margin:4px;float:left;"/>
+           <span style="background:yellow;margin:6px;float:left;">${ans}</span>
+           `
+           articleObj.appendChild(Herspan)
+           articleObj.scrollTop=articleObj.scrollHeight
+       }else{
+    
+           Herspan.innerHTML=`
+           <img src="./imgs/he.jpg" style="width:35;height:35;margin:4px;float:left;"/>
+           <span style="background:yellow;margin:6px;float:left;">对方没听懂，换个词试试</span>
+           `
+           articleObj.appendChild(Herspan)
+           articleObj.scrollTop=articleObj.scrollHeight
+       }
+     })
+     articleObj.scrollTop=articleObj.scrollHeight
+  }
+</script>
+
